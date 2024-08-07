@@ -18,9 +18,9 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """
-    Обрабатывает команду /start и инициирует взаимодействие с пользователем.
+
     :param update: Объект обновления, содержащий информацию о полученном сообщении.
-    :param context: Контекст, содержащий информацию о состоянии бота и данные пользователя.
+    :param context: Контекст, содержащий дополнительные данные и методы для обработки обновления.
     :return:
     """
     button = KeyboardButton('Загрузить файл')
@@ -34,7 +34,7 @@ async def handle_average_price(update: Update, context: ContextTypes.DEFAULT_TYP
     Обрабатывает команду /average_price и выводит результат пользователю.
 
     :param update: Объект обновления, содержащий информацию о полученном сообщении.
-    :param context: Контекст, содержащий информацию о состоянии бота и данные пользователя.
+    :param context: Контекст, содержащий дополнительные данные и методы для обработки обновления.
     :return:
     """
     avg_price_data = calculate_avg_price()
@@ -49,7 +49,7 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
     Если файл успешно прочитан, сохраняет данные в базу данных.
 
     :param update: Объект обновления, содержащий информацию о полученном сообщении.
-    :param context: Контекст, содержащий информацию о состоянии бота и данные пользователя.
+    :param context: Контекст, содержащий дополнительные данные и методы для обработки обновления.
     :return:
     """
     file = await update.message.document.get_file()
