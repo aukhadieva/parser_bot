@@ -1,12 +1,16 @@
 import logging
+import os
 
 import pandas as pd
+from dotenv import load_dotenv
 from telegram import Update, KeyboardButton, ReplyKeyboardMarkup
-from telegram.ext import ContextTypes
+from telegram.ext import ContextTypes, ApplicationBuilder, CommandHandler, MessageHandler, filters
 
-from database import save_to_database
+from database import save_to_database, setup_database
 from utils import xlsx_path
 
+
+load_dotenv()
 
 # Настройка логирования
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -52,3 +56,22 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
     await update.message.reply_text('Файл успешно загружен.')
 
     save_to_database(dataframe)
+
+
+def main() -> None:
+    """
+    Запускает бота.
+    :return:
+    """
+    logging.info('Бот запущен')
+
+    setup_database()
+
+    app = ApplicationBuilder().token(os.getenv('TG_TOKEN')).build()
+    app.add_handler(CommandHandler('start', handle_start))
+    app.add_handler(MessageHandler(filters.Document.ALL, handle_file))
+    app.run_polling()
+
+
+if __name__ == '__main__':
+    main()
