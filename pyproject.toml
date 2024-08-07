@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "parser-bot"
+version = "0.1.0"
+description = ""
+authors = ["Olga Aukhadieva <sarole4ka@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+requests = "^2.32.3"
+pandas = "^2.2.2"
+python-dotenv = "^1.0.1"
+flake8 = "^7.1.1"
+python-telegram-bot = "^21.4"
+lxml = "^5.2.2"
+openpyxl = "^3.1.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
