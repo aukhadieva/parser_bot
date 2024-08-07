@@ -1,6 +1,8 @@
 import logging
 import sqlite3
 
+import pandas as pd
+
 from utils import db_path
 
 
@@ -16,7 +18,7 @@ def setup_database() -> None:
     conn.close()
 
 
-def save_to_database(dataframe) -> None:
+def save_to_database(dataframe: pd.DataFrame) -> None:
     """
     Сохраняет данные из DataFrame в базу данных SQLite.
     :param dataframe: Pandas DataFrame, содержащий данные для сохранения.
