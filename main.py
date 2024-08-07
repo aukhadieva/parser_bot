@@ -7,8 +7,8 @@ from telegram import Update, KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import ContextTypes, ApplicationBuilder, CommandHandler, MessageHandler, filters
 
 from database import save_to_database, setup_database
+from services import calculate_avg_price
 from utils import xlsx_path
-
 
 load_dotenv()
 
@@ -29,10 +29,22 @@ async def handle_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     await update.message.reply_text('Привет! Прикрепи файл Excel с данными.', reply_markup=reply_markup)
 
 
+async def handle_average_price(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """
+    Обрабатывает команду /average_price и выводит результат пользователю.
+
+    :param update: Объект обновления, содержащий информацию о полученном сообщении.
+    :param context: Контекст, содержащий информацию о состоянии бота и данные пользователя.
+    :return:
+    """
+    avg_price = calculate_avg_price()
+    await update.message.reply_text(f'Средняя цена: {avg_price} рублей')
+
+
 async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """
     Обрабатывает загруженный документ от пользователя,
-    сохраняет его на диске и считывает содержимое файла Excel.
+    сохраняет его и считывает содержимое файла Excel.
     Если файл успешно прочитан, выводит его содержимое и сохраняет данные в базу данных.
 
     :param update: Объект обновления, содержащий информацию о полученном сообщении.
@@ -57,6 +69,8 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
 
     save_to_database(dataframe)
 
+    await handle_average_price(update, context)
+
 
 def main() -> None:
     """
@@ -70,6 +84,8 @@ def main() -> None:
     app = ApplicationBuilder().token(os.getenv('TG_TOKEN')).build()
     app.add_handler(CommandHandler('start', handle_start))
     app.add_handler(MessageHandler(filters.Document.ALL, handle_file))
+    app.add_handler(CommandHandler('average_price', handle_average_price))
+
     app.run_polling()
 
 
