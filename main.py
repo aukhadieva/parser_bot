@@ -37,8 +37,9 @@ async def handle_average_price(update: Update, context: ContextTypes.DEFAULT_TYP
     :param context: Контекст, содержащий информацию о состоянии бота и данные пользователя.
     :return:
     """
-    avg_price = calculate_avg_price()
-    await update.message.reply_text(f'Средняя цена: {avg_price} рублей')
+    avg_price_data = calculate_avg_price()
+    for site, avg_price in avg_price_data.items():
+        await update.message.reply_text(f'Средняя цена на сайте {site}: {avg_price} рублей')
 
 
 async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
